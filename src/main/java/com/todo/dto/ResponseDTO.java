@@ -1,5 +1,6 @@
 package com.todo.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,12 +15,14 @@ public class ResponseDTO<T> {
     private T data;
     private LocalDateTime timestamp = LocalDateTime.now();
 
+    @Builder
     public ResponseDTO(String message,T data){
         this.status = HttpStatus.OK.value();
         this.message = message;
         this.data = data;
     }
 
+    @Builder
     public ResponseDTO(Integer status,String message,T data){
         this.status = status;
         this.message = message;

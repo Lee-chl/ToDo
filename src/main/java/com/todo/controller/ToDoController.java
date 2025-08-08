@@ -16,13 +16,10 @@ import java.util.List;
 public class ToDoController {
 
     @PostMapping("select/todo")
-    public ResponseDTO<?> select(@RequestBody ToDoDto dto){
+    public String select(@RequestBody ToDoDto dto){
         //vo에 받기
         //받은 vo가 null 값인지 체크
 
-        List<String> list = new ArrayList<>();
-        list.add(dto.getMessage());
-        ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
-        return response;
+        return dto.getMessage();
     }
 }
