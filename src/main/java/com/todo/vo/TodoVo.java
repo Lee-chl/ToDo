@@ -1,17 +1,15 @@
 package com.todo.vo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @Entity
 @Table(name="Todo")
 public class TodoVo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String message;
     private String ect;
