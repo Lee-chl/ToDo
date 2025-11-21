@@ -1,6 +1,8 @@
 package com.todo.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.todo.dto.ToDoDto;
+import com.todo.vo.QTodoVo;
 import com.todo.vo.TodoVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -12,9 +14,10 @@ import java.util.List;
 public class TodoRepository {
     private final JPAQueryFactory queryFactory;
 
-//    public List<TodoVo> getList(TodoVo todo){
-//        return queryFactory.selectFrom(todo)
-//                .where()
-//    }
+    public List<TodoVo> getList(ToDoDto todo){
+        return queryFactory.selectFrom(QTodoVo.todoVo)
+                .where(QTodoVo.todoVo.id.eq(todo.getId()))
+                .fetch();
+    }
 
 }

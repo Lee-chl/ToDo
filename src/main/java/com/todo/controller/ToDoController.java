@@ -5,6 +5,7 @@ import com.todo.dto.ToDoDto;
 import com.todo.service.TodoService;
 import com.todo.vo.TodoVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,17 +22,11 @@ public class ToDoController {
     private TodoService service;
 
     @PostMapping("select/todo")
-    public String select(@RequestBody ToDoDto dto){
-        //DTO null 체크
-        //vo에 받기
-        //TodoVo resultData = service.testService();
-        //받은 vo가 null 값인지 체크
-        //그 후 서비스로 연결 (밑은 예시로 만든 것)
-        //String str = service.testService();
-
-        //ResponseDTO<String> response = ResponseDTO.<String>builder().data(str).build();
-
-        //return ResponseEntity.ok().body(response);
-        return dto.getMessage();
+    public ResponseEntity<List<TodoVo>> select(@RequestBody ToDoDto dto){
+        List<TodoVo> resultData = service.getTodoList(dto);
+        if(resultData == null){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resultData);
     }
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ToDoDto {
-    private int id;
+    private String id;
     private String message;
+    private String ect;
 }
