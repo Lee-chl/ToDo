@@ -1,12 +1,11 @@
 package com.todo.controller;
 
-import com.todo.dto.ResponseDTO;
 import com.todo.dto.ToDoDto;
 import com.todo.service.TodoDataService;
 import com.todo.service.TodoService;
 import com.todo.vo.TodoVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,5 +47,15 @@ public class ToDoController {
         return ResponseEntity.ok(returnStr);
     }
 
-
+    @PostMapping("update/todo")
+    public ResponseEntity<String> updateTodo(@RequestBody ToDoDto dto) throws Exception {
+        if (dto.getId().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("input data Error");
+        }
+        boolean resultCount = dataService.updateTodo(dto);
+        if (resultCount)
+            return ResponseEntity.ok("성공");
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("실패");
+    }
 }

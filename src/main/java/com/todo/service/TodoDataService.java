@@ -22,5 +22,19 @@ public class TodoDataService {
         return repository.insertTodo(todoVo);
     }
 
+    public Boolean updateTodo(ToDoDto dto) {
+        TodoVo todoVo = TodoVo.builder()
+                .id(dto.getId())
+                .message(dto.getMessage())
+                .ect(dto.getEct())
+                .build();
+        long returnR = repository.updateTodo(todoVo);
+
+        if (returnR > 0)
+            return true;
+        else
+            return false;
+    }
+
 
 }

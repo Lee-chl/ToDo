@@ -13,10 +13,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TodoRepository {
     private final JPAQueryFactory queryFactory;
+    QTodoVo todovo = QTodoVo.todoVo;
 
-    public List<TodoVo> getList(ToDoDto todo){
-        return queryFactory.selectFrom(QTodoVo.todoVo)
-                .where(QTodoVo.todoVo.id.eq(todo.getId()))
+    public List<TodoVo> getList(ToDoDto todo) {
+        return queryFactory.selectFrom(todovo)
+                .where(todovo.id.eq(todo.getId()))
                 .fetch();
     }
 
