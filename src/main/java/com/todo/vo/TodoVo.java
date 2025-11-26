@@ -1,13 +1,14 @@
 package com.todo.vo;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Getter
+@Data
 @Entity
-@Table(name="Todo")
+@Table(name = "Todo")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TodoVo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,10 +16,4 @@ public class TodoVo {
     private String message;
     private String ect;
 
-    @Builder
-    public TodoVo(String id, String message,String ect){
-        this.id = id;
-        this.message = message;
-        this.ect = ect;
-    }
 }
