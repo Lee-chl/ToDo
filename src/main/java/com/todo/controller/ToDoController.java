@@ -5,6 +5,8 @@ import com.todo.service.TodoDataService;
 import com.todo.service.TodoService;
 import com.todo.vo.TodoVo;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +23,13 @@ public class ToDoController {
 
     private final TodoService service;
     private final TodoDataService dataService;
+    final Logger log = LoggerFactory.getLogger(getClass());
 
     @PostMapping("select/todo")
     public ResponseEntity<List<TodoVo>> selectTodoList(@RequestBody ToDoDto dto) {
         List<TodoVo> resultData = service.getTodoList(dto);
         if (resultData == null) {
+            log.error("no dto data");
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(resultData);
