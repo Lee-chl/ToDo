@@ -29,6 +29,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    runtimeOnly 'com.h2database:h2'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -48,13 +49,13 @@ tasks.named('test') {
 
 def querydslDir = "src/main/generated"
 //생성 위치 지정
-tasks.withType(JavaCompile){
+tasks.withType(JavaCompile) {
     options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
 }
 
 //java source set에 qclass 위치 추가
-sourceSets{
-    main.java.srcDirs += [ querydslDir ]
+sourceSets {
+    main.java.srcDirs += [querydslDir]
 }
 
 clean {

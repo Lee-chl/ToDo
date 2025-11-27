@@ -1,8 +1,10 @@
 package com.todo.controller;
 
+import com.todo.dto.ResponseDTO;
 import com.todo.dto.ToDoDto;
 import com.todo.service.TodoDataService;
 import com.todo.service.TodoService;
+import com.todo.service.TodoService_new;
 import com.todo.vo.TodoVo;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("todo")
@@ -23,7 +26,8 @@ public class ToDoController {
 
     private final TodoService service;
     private final TodoDataService dataService;
-    final Logger log = LoggerFactory.getLogger(getClass());
+    private final TodoService_new service_new;
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @PostMapping("select/todo")
     public ResponseEntity<List<TodoVo>> selectTodoList(@RequestBody ToDoDto dto) {
@@ -60,5 +64,32 @@ public class ToDoController {
             return ResponseEntity.ok("성공");
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("실패");
+    }
+
+    @PostMapping("create/todo")
+    public ResponseEntity<?> createTodo(@RequestBody ToDoDto dto) {
+        try {
+            String temporaryUserId = "temporary-user";
+
+            // 엔티티로 변환
+            TodoVo vo = TodoVo.builder()
+                    .id(temporaryUserId) //임시 사용자 아이디 설정
+                    .message(dto.getMessage())
+                    .ect(dto.getEct())
+                    .build();
+            //서비스 사용해 엔티티 생성
+            List<TodoVo> entities = service_new.create(vo);
+            // 엔티티 리스트를 DTO 리스트로 변환
+            List<ToDoDto> dtos = entities.stream().map(ToDoDto::new).collect(Collectors.toList());
+            //변환된 TodoDto 리스트를 이용해 초기화
+            ResponseDTO<List<ToDoDto>> response = ResponseDTO.<List<ToDoDto>>builder().data(dtos).build();
+
+            return ResponseEntity.ok().body(response);
+
+        } catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<String> response = ResponseDTO.<String>builder().data(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 }
