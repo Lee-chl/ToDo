@@ -13,6 +13,7 @@ public class TodoVo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+    private String user_id;
     private String message;
     private String ect;
 

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ToDoDto {
     private String id;
+    private String user_id;
     private String message;
     private String ect;
 
