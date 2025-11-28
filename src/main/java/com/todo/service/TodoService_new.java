@@ -26,6 +26,10 @@ public class TodoService_new {
         return repository_new.findByUserId(vo.getId());
     }
 
+    public List<TodoVo> retrieveTodoList(final String userId) {
+        return repository_new.findByUserId(userId);
+    }
+
     private void validate(final TodoVo vo) {
         if (vo == null) {
             log.warn("Entity cannot be null");

@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +25,7 @@ public class ToDoController {
     private final TodoDataService dataService;
     private final TodoService_new service_new;
     private final Logger log = LoggerFactory.getLogger(getClass());
+    private String temporaryUserId = "temporary-user";
 
     @PostMapping("select/todo")
     public ResponseEntity<List<TodoVo>> selectTodoList(@RequestBody ToDoDto dto) {
@@ -69,8 +67,6 @@ public class ToDoController {
     @PostMapping("create/todo")
     public ResponseEntity<?> createTodo(@RequestBody ToDoDto dto) {
         try {
-            String temporaryUserId = "temporary-user";
-
             // 엔티티로 변환
             TodoVo vo = TodoVo.builder()
                     .id(temporaryUserId) //임시 사용자 아이디 설정
@@ -91,5 +87,17 @@ public class ToDoController {
             ResponseDTO<String> response = ResponseDTO.<String>builder().data(error).build();
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @GetMapping("get/todo")
+    public ResponseEntity<?> retrieveTodoList() {
+        // 서비스 메서드 retrieve() 메서드를 사용해 Todo 리스트 가져온다.
+        List<TodoVo> entities = service_new.retrieveTodoList(temporaryUserId);
+        //자바 스트림을 이용해 리턴된 엔티티 리스트를 TodoDto 리스트로 변환
+        List<ToDoDto> dtos = entities.stream().map(ToDoDto::new).collect(Collectors.toList());
+        // 변환된 TodoDTO 리스트를 이용해 ResponseDTO 초기화
+        ResponseDTO<List<ToDoDto>> response = ResponseDTO.<List<ToDoDto>>builder().data(dtos).build();
+        // ResponseDTO 리턴
+        return ResponseEntity.ok().body(response);
     }
 }
