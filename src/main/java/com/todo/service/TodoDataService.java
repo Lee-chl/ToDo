@@ -19,7 +19,7 @@ public class TodoDataService {
 
     public long insertTodo(ToDoDto dto) {
         TodoVo todoVo = TodoVo.builder()
-                .id(dto.getId())
+                .user_id(dto.getUser_id())
                 .message(dto.getMessage())
                 .ect(dto.getEct())
                 .build();
@@ -28,7 +28,7 @@ public class TodoDataService {
 
     public Boolean updateTodo(ToDoDto dto) {
         TodoVo todoVo = TodoVo.builder()
-                .id(dto.getId())
+                .user_id(dto.getUser_id())
                 .message(dto.getMessage())
                 .ect(dto.getEct())
                 .build();

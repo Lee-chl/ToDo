@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface TodoRepository_new extends JpaRepository<TodoVo, String> {
     //?1 은 메서드의 매개변수의 순서 위치
-    @Query(value = "select * from todo t where t.userId = ?1", nativeQuery = true)
+    @Query(value = "select t from TodoVo t where t.user_id = ?1")
     List<TodoVo> findByUserId(String userId);
 }

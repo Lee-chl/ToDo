@@ -25,7 +25,7 @@ public class TodoService {
         // 엔티티 저장
         repository_new.save(entity);
         //엔티티 검색
-        TodoVo savedEntity = repository_new.findById(entity.getId()).get();
+        TodoVo savedEntity = repository_new.findById(entity.getUser_id()).get();
         return savedEntity.getMessage();
     }
 

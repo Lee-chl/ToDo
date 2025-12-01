@@ -17,7 +17,7 @@ public class TodoRepository {
 
     public List<TodoVo> getList(ToDoDto todo) {
         return queryFactory.selectFrom(todovo)
-                .where(todovo.id.eq(todo.getId()))
+                .where(todovo.user_id.eq(todo.getUser_id()))
                 .fetch();
     }
 

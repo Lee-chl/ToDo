@@ -25,7 +25,7 @@ public class ToDoController {
     private final TodoDataService dataService;
     private final TodoService_new service_new;
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private String temporaryUserId = "temporary-user";
+    private final String temporaryUserId = "temporary-user";
 
     @PostMapping("select/todo")
     public ResponseEntity<List<TodoVo>> selectTodoList(@RequestBody ToDoDto dto) {
@@ -67,14 +67,16 @@ public class ToDoController {
     @PostMapping("create/todo")
     public ResponseEntity<?> createTodo(@RequestBody ToDoDto dto) {
         try {
+            log.info(dto.toString());
             // 엔티티로 변환
             TodoVo vo = TodoVo.builder()
-                    .id(temporaryUserId) //임시 사용자 아이디 설정
+                    .user_id(temporaryUserId) //임시 사용자 아이디 설정
                     .message(dto.getMessage())
                     .ect(dto.getEct())
                     .build();
             //서비스 사용해 엔티티 생성
             List<TodoVo> entities = service_new.create(vo);
+            log.info(vo.toString());
             // 엔티티 리스트를 DTO 리스트로 변환
             List<ToDoDto> dtos = entities.stream().map(ToDoDto::new).collect(Collectors.toList());
             //변환된 TodoDto 리스트를 이용해 초기화

@@ -21,9 +21,9 @@ public class TodoService_new {
     public List<TodoVo> create(final TodoVo vo) {
         validate(vo);
         repository_new.save(vo);
-        log.info("Entity ID : {} is saved", vo.getId());
+        log.info("Entity ID : {} is saved", vo.getUser_id());
 
-        return repository_new.findByUserId(vo.getId());
+        return repository_new.findByUserId(vo.getUser_id());
     }
 
     public List<TodoVo> retrieveTodoList(final String userId) {
@@ -35,7 +35,7 @@ public class TodoService_new {
             log.warn("Entity cannot be null");
             throw new RuntimeException("Entity cannot be null");
         }
-        if (vo.getId() == null) {
+        if (vo.getUser_id() == null) {
             log.warn("Unknown User");
             throw new RuntimeException("Unknown User");
         }

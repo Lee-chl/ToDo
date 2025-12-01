@@ -17,7 +17,7 @@ public class ToDoDto {
     private String ect;
 
     public ToDoDto(final TodoVo todoVo) {
-        this.id = todoVo.getId();
+        this.user_id = todoVo.getUser_id();
         this.message = todoVo.getMessage();
         this.ect = todoVo.getEct();
     }
