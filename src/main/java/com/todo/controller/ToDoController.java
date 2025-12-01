@@ -4,7 +4,7 @@ import com.todo.dto.ResponseDTO;
 import com.todo.dto.ToDoDto;
 import com.todo.service.TodoDataService;
 import com.todo.service.TodoService;
-import com.todo.service.TodoService_new;
+import com.todo.service.TodoServiceNew;
 import com.todo.vo.TodoVo;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,9 +23,9 @@ public class ToDoController {
 
     private final TodoService service;
     private final TodoDataService dataService;
-    private final TodoService_new service_new;
+    private final TodoServiceNew serviceNew;
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final String temporaryUserId = "temporary-user";
+    private String temporaryUserId = "temporary-user";
 
     @PostMapping("select/todo")
     public ResponseEntity<List<TodoVo>> selectTodoList(@RequestBody ToDoDto dto) {
@@ -75,7 +75,7 @@ public class ToDoController {
                     .ect(dto.getEct())
                     .build();
             //서비스 사용해 엔티티 생성
-            List<TodoVo> entities = service_new.create(vo);
+            List<TodoVo> entities = serviceNew.create(vo);
             log.info(vo.toString());
             // 엔티티 리스트를 DTO 리스트로 변환
             List<ToDoDto> dtos = entities.stream().map(ToDoDto::new).collect(Collectors.toList());
@@ -93,8 +93,8 @@ public class ToDoController {
 
     @GetMapping("get/todo")
     public ResponseEntity<?> retrieveTodoList() {
-        // 서비스 메서드 retrieve() 메서드를 사용해 Todo 리스트 가져온다.
-        List<TodoVo> entities = service_new.retrieveTodoList(temporaryUserId);
+        // 서비스 메서드 retrieve() 메서드를 사용해 리스트 가져온다.
+        List<TodoVo> entities = serviceNew.retrieveTodoList(temporaryUserId);
         //자바 스트림을 이용해 리턴된 엔티티 리스트를 TodoDto 리스트로 변환
         List<ToDoDto> dtos = entities.stream().map(ToDoDto::new).collect(Collectors.toList());
         // 변환된 TodoDTO 리스트를 이용해 ResponseDTO 초기화
