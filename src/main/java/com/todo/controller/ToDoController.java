@@ -25,7 +25,7 @@ public class ToDoController {
     private final TodoDataService dataService;
     private final TodoServiceNew serviceNew;
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private String temporaryUserId = "temporary-user";
+    private final String temporaryUserId = "temporary-user";
 
     @PostMapping("select/todo")
     public ResponseEntity<List<TodoVo>> selectTodoList(@RequestBody ToDoDto dto) {

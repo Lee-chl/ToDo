@@ -2,18 +2,18 @@ package com.todo.service;
 
 import com.todo.dto.ToDoDto;
 import com.todo.repository.TodoRepository;
-import com.todo.repository.TodoRepository_new;
+import com.todo.repository.TodoRepositoryNew;
 import com.todo.vo.TodoVo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TodoService {
-    @Autowired
-    TodoRepository repository;
-    TodoRepository_new repository_new;
+    private final TodoRepository repository;
+    private final TodoRepositoryNew repositoryNew;
 
     public List<TodoVo> getTodoList(ToDoDto todoDto) {
         return repository.getList(todoDto);
@@ -23,9 +23,9 @@ public class TodoService {
         // 엔티티 생성
         TodoVo entity = TodoVo.builder().message("My first todo item").build();
         // 엔티티 저장
-        repository_new.save(entity);
+        repositoryNew.save(entity);
         //엔티티 검색
-        TodoVo savedEntity = repository_new.findById(entity.getUser_id()).get();
+        TodoVo savedEntity = repositoryNew.findById(entity.getUser_id()).get();
         return savedEntity.getMessage();
     }
 

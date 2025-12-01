@@ -1,6 +1,6 @@
 package com.todo.service;
 
-import com.todo.repository.TodoRepository_new;
+import com.todo.repository.TodoRepositoryNew;
 import com.todo.vo.TodoVo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,21 +13,21 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class TodoService_new {
+public class TodoServiceNew {
 
-    private final TodoRepository_new repository_new;
+    private final TodoRepositoryNew repositoryNew;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     public List<TodoVo> create(final TodoVo vo) {
         validate(vo);
-        repository_new.save(vo);
+        repositoryNew.save(vo);
         log.info("Entity ID : {} is saved", vo.getUser_id());
 
-        return repository_new.findByUserId(vo.getUser_id());
+        return repositoryNew.findByUserId(vo.getUser_id());
     }
 
     public List<TodoVo> retrieveTodoList(final String userId) {
-        return repository_new.findByUserId(userId);
+        return repositoryNew.findByUserId(userId);
     }
 
     private void validate(final TodoVo vo) {
