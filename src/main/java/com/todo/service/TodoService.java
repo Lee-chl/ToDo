@@ -1,6 +1,6 @@
 package com.todo.service;
 
-import com.todo.dto.ToDoDto;
+import com.todo.dto.toDoDto;
 import com.todo.repository.TodoRepository;
 import com.todo.repository.TodoRepositoryNew;
 import com.todo.vo.TodoVo;
@@ -15,7 +15,7 @@ public class TodoService {
     private final TodoRepository repository;
     private final TodoRepositoryNew repositoryNew;
 
-    public List<TodoVo> getTodoList(ToDoDto todoDto) {
+    public List<TodoVo> getTodoList(toDoDto todoDto) {
         return repository.getList(todoDto);
     }
 

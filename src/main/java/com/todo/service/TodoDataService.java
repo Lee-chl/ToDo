@@ -1,6 +1,6 @@
 package com.todo.service;
 
-import com.todo.dto.ToDoDto;
+import com.todo.dto.toDoDto;
 import com.todo.repository.TodoDataRepository;
 import com.todo.vo.TodoVo;
 import jakarta.transaction.Transactional;
@@ -17,20 +17,20 @@ public class TodoDataService {
     private final TodoDataRepository repository;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    public long insertTodo(ToDoDto dto) {
+    public long insertTodo(toDoDto dto) {
         TodoVo todoVo = TodoVo.builder()
-                .user_id(dto.getUser_id())
                 .message(dto.getMessage())
                 .ect(dto.getEct())
+                .done(dto.isDone())
                 .build();
         return repository.insertTodo(todoVo);
     }
 
-    public Boolean updateTodo(ToDoDto dto) {
+    public Boolean updateTodo(toDoDto dto) {
         TodoVo todoVo = TodoVo.builder()
-                .user_id(dto.getUser_id())
                 .message(dto.getMessage())
                 .ect(dto.getEct())
+                .done(dto.isDone())
                 .build();
         long returnR = repository.updateTodo(todoVo);
 

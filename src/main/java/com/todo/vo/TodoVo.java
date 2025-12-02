@@ -2,6 +2,7 @@ package com.todo.vo;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
@@ -11,9 +12,10 @@ import lombok.*;
 @Builder
 public class TodoVo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     private String user_id;
     private String message;
     private String ect;
+    private boolean done;
 }

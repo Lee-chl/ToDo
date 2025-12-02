@@ -1,7 +1,7 @@
 package com.todo.controller;
 
 import com.todo.dto.ResponseDTO;
-import com.todo.dto.ToDoDto;
+import com.todo.dto.toDoDto;
 import com.todo.service.TodoDataService;
 import com.todo.service.TodoService;
 import com.todo.service.TodoServiceNew;
@@ -28,7 +28,7 @@ public class ToDoController {
     private final String temporaryUserId = "temporary-user";
 
     @PostMapping("select/todo")
-    public ResponseEntity<List<TodoVo>> selectTodoList(@RequestBody ToDoDto dto) {
+    public ResponseEntity<List<TodoVo>> selectTodoList(@RequestBody toDoDto dto) {
         List<TodoVo> resultData = service.getTodoList(dto);
         if (resultData == null) {
             log.error("no dto data");
@@ -38,7 +38,7 @@ public class ToDoController {
     }
 
     @PostMapping("insert/todo")
-    public ResponseEntity<String> insertTodo(@RequestBody ToDoDto dto) throws Exception {
+    public ResponseEntity<String> insertTodo(@RequestBody toDoDto dto) throws Exception {
         if (dto.getId().isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Input data error");
         }
@@ -53,7 +53,7 @@ public class ToDoController {
     }
 
     @PostMapping("update/todo")
-    public ResponseEntity<String> updateTodo(@RequestBody ToDoDto dto) throws Exception {
+    public ResponseEntity<String> updateTodo(@RequestBody toDoDto dto) throws Exception {
         if (dto.getId().isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("input data Error");
         }
@@ -65,22 +65,19 @@ public class ToDoController {
     }
 
     @PostMapping("create/todo")
-    public ResponseEntity<?> createTodo(@RequestBody ToDoDto dto) {
+    public ResponseEntity<?> createTodo(@RequestBody toDoDto dto) {
         try {
-            log.info(dto.toString());
             // 엔티티로 변환
-            TodoVo vo = TodoVo.builder()
-                    .user_id(temporaryUserId) //임시 사용자 아이디 설정
-                    .message(dto.getMessage())
-                    .ect(dto.getEct())
-                    .build();
+            TodoVo vo = toDoDto.toVo(dto);
+            vo.setUser_id(temporaryUserId);
+            vo.setId(null);
             //서비스 사용해 엔티티 생성
             List<TodoVo> entities = serviceNew.create(vo);
             log.info(vo.toString());
             // 엔티티 리스트를 DTO 리스트로 변환
-            List<ToDoDto> dtos = entities.stream().map(ToDoDto::new).collect(Collectors.toList());
+            List<toDoDto> dtos = entities.stream().map(toDoDto::new).collect(Collectors.toList());
             //변환된 TodoDto 리스트를 이용해 초기화
-            ResponseDTO<List<ToDoDto>> response = ResponseDTO.<List<ToDoDto>>builder().data(dtos).build();
+            ResponseDTO<List<toDoDto>> response = ResponseDTO.<List<toDoDto>>builder().data(dtos).build();
 
             return ResponseEntity.ok().body(response);
 
@@ -96,10 +93,21 @@ public class ToDoController {
         // 서비스 메서드 retrieve() 메서드를 사용해 리스트 가져온다.
         List<TodoVo> entities = serviceNew.retrieveTodoList(temporaryUserId);
         //자바 스트림을 이용해 리턴된 엔티티 리스트를 TodoDto 리스트로 변환
-        List<ToDoDto> dtos = entities.stream().map(ToDoDto::new).collect(Collectors.toList());
+        List<toDoDto> dtos = entities.stream().map(toDoDto::new).collect(Collectors.toList());
         // 변환된 TodoDTO 리스트를 이용해 ResponseDTO 초기화
-        ResponseDTO<List<ToDoDto>> response = ResponseDTO.<List<ToDoDto>>builder().data(dtos).build();
+        ResponseDTO<List<toDoDto>> response = ResponseDTO.<List<toDoDto>>builder().data(dtos).build();
         // ResponseDTO 리턴
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping("put/todo")
+    public ResponseEntity<?> putTodo(@RequestBody toDoDto dto) {
+        TodoVo vo = toDoDto.toVo(dto);
+        vo.setUser_id(temporaryUserId);
+        List<TodoVo> entities = serviceNew.update(vo);
+        List<toDoDto> dtos = entities.stream().map(toDoDto::new).collect(Collectors.toList());
+        ResponseDTO<List<toDoDto>> response = ResponseDTO.<List<toDoDto>>builder().data(dtos).build();
+
         return ResponseEntity.ok().body(response);
     }
 }

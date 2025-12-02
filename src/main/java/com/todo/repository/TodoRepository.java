@@ -1,7 +1,7 @@
 package com.todo.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.todo.dto.ToDoDto;
+import com.todo.dto.toDoDto;
 import com.todo.vo.QTodoVo;
 import com.todo.vo.TodoVo;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +15,9 @@ public class TodoRepository {
     private final JPAQueryFactory queryFactory;
     QTodoVo todovo = QTodoVo.todoVo;
 
-    public List<TodoVo> getList(ToDoDto todo) {
+    public List<TodoVo> getList(toDoDto todo) {
         return queryFactory.selectFrom(todovo)
-                .where(todovo.user_id.eq(todo.getUser_id()))
+                .where(todovo.id.eq(todo.getId()))
                 .fetch();
     }
 

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,6 +29,23 @@ public class TodoServiceNew {
 
     public List<TodoVo> retrieveTodoList(final String userId) {
         return repositoryNew.findByUserId(userId);
+    }
+
+    public List<TodoVo> update(final TodoVo vo) {
+        validate(vo);
+        final Optional<TodoVo> original = repositoryNew.findById(vo.getId());
+        original.ifPresent(todo -> {
+            //반환된 todovo가 존재하면 값을 새 vo 값으로 덮어 씌운다.
+            todo.setMessage(vo.getMessage());
+            todo.setEct(vo.getEct());
+            todo.setDone(vo.isDone());
+
+            //db 에 새 값 저장
+            repositoryNew.save(todo);
+        });
+
+        //모든 사용자의 리스트 리턴
+        return retrieveTodoList(vo.getUser_id());
     }
 
     private void validate(final TodoVo vo) {
