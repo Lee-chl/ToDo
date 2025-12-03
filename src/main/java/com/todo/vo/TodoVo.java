@@ -2,7 +2,6 @@ package com.todo.vo;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity

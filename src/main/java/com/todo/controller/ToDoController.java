@@ -110,4 +110,20 @@ public class ToDoController {
 
         return ResponseEntity.ok().body(response);
     }
+
+    @DeleteMapping("delete/todo")
+    public ResponseEntity<?> deleteTodo(@RequestBody toDoDto dto) {
+        try {
+            TodoVo vo = toDoDto.toVo(dto);
+            vo.setUser_id(temporaryUserId);
+            List<TodoVo> entities = serviceNew.delete(vo);
+            List<toDoDto> dtos = entities.stream().map(toDoDto::new).collect(Collectors.toList());
+            ResponseDTO<List<toDoDto>> response = ResponseDTO.<List<toDoDto>>builder().data(dtos).build();
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<String> response = ResponseDTO.<String>builder().data(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 }
