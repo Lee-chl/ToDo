@@ -21,6 +21,13 @@ class AddTodo extends React.Component {
         this.setState({item: {title: ""}});
     }
 
+    // Enter 입력 시 아이템 추가
+    enterKeyEventHandler = (e) => {
+        if (e.key === 'Enter') {
+            this.onButtonClick();
+        }
+    }
+
     render() {
         return (
             <Paper style={{margin: 16, padding: 16}}>
@@ -30,6 +37,7 @@ class AddTodo extends React.Component {
                             placeholder="Add Todo here" fullWidth
                             onChange={this.onInputChange}
                             value={this.state.item.title}
+                            onKeyPress={this.enterKeyEventHandler}
                         />
                     </Grid>
                     <Grid xs={1} md={1} item>

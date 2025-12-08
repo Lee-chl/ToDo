@@ -22,7 +22,6 @@ class App extends React.Component {
         item.done = false;
         thisItems.push(item);
         this.setState({items: thisItems}); // 업데이트는 반드시 this.setState로 해야함
-        console.log("items :", this.state.items)
     }
 
     render() {
