@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import Todo from "./Todo";
-import {Paper, List} from "@mui/material";
+import AddTodo from "./AddTodo";
+import {Paper, List, Container} from "@mui/material";
 
 class App extends React.Component {
     constructor(props) {
@@ -14,6 +15,16 @@ class App extends React.Component {
         };
     }
 
+    // list add
+    add = (item) => {
+        const thisItems = this.state.items;
+        item.id = "ID-" + thisItems.length; //key 위한 id 추가
+        item.done = false;
+        thisItems.push(item);
+        this.setState({items: thisItems}); // 업데이트는 반드시 this.setState로 해야함
+        console.log("items :", this.state.items)
+    }
+
     render() {
         let todoItems = this.state.items.length > 0 && (
             <Paper style={{margin: 16}}>
@@ -24,7 +35,14 @@ class App extends React.Component {
                 </List>
             </Paper>
         );
-        return <div className="App">{todoItems}</div>;
+        return (
+            <div className="App">
+                <Container maxWidth="md">
+                    <AddTodo add={this.add}/>
+                    <div className="TodoList">{todoItems}</div>
+                </Container>
+            </div>
+        );
     }
 }
 
