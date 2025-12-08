@@ -9,8 +9,8 @@ class App extends React.Component {
         super(props);
         this.state = {
             items: [
-                {id: 0, message: "Hello", done: true},
-                {id: 1, message: "Hello2", done: false}
+                {id: 0, title: "Hello", done: true},
+                {id: 1, title: "Hello2", done: false}
             ],
         };
     }

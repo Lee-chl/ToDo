@@ -5,14 +5,14 @@ class AddTodo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {item: {title: ""}}; //사용자 입력 저장할 오브젝트
+        this.add = props.add; // props 함수를 this.add에 연결
     }
 
     //입력한 문자 저장
     onInputChange = (e) => {
         const thisItem = this.state.item;
-        thisItem.message = e.target.value;
+        thisItem.title = e.target.value;
         this.setState({item: thisItem});
-        console.log(thisItem)
     }
 
     //버튼 클릭
@@ -29,7 +29,7 @@ class AddTodo extends React.Component {
                         <TextField
                             placeholder="Add Todo here" fullWidth
                             onChange={this.onInputChange}
-                            value={this.state.item.message}
+                            value={this.state.item.title}
                         />
                     </Grid>
                     <Grid xs={1} md={1} item>

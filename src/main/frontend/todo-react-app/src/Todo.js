@@ -18,7 +18,7 @@ class Todo extends React.Component {
                         type="text"
                         id={item.id}
                         name={item.id}
-                        value={item.message}
+                        value={item.title}
                         multiline={true}
                         fullWidth={true}
                     />
