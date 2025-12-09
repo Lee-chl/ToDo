@@ -24,12 +24,22 @@ class App extends React.Component {
         this.setState({items: thisItems}); // 업데이트는 반드시 this.setState로 해야함
     }
 
+    // delete
+    delete = (item) => {
+        const thisItems = this.state.items;
+        const newItems = thisItems.filter(e => e.id !== item.id);
+        this.setState({items: newItems}, () => {
+            //디버깅 콜백
+            console.log("Update Items : ", this.state.items)
+        });
+    }
+
     render() {
         let todoItems = this.state.items.length > 0 && (
             <Paper style={{margin: 16}}>
                 <List>
                     {this.state.items.map((item) => (
-                        <Todo item={item} key={item.id}/>
+                        <Todo item={item} key={item.id} delete={this.delete}/>
                     ))}
                 </List>
             </Paper>
