@@ -11,12 +11,31 @@ import DeleteOutlined from "@mui/icons-material/DeleteOutlined"
 class Todo extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {item: props.item};
+        this.state = {item: props.item, readOnly: true}; //타이틀 수정할 수있는 상태로 변경하기 위해 read Only 상태 추가
         this.delete = props.delete;
     }
 
     deleteEventHandler = () => {
         this.delete(this.state.item)
+    }
+
+    //readonly 모드 false로 변경 (수정 가능)
+    offReadOnlyMode = () => {
+        this.setState({readOnly: false});
+    }
+
+    //read only 모드 true로 변경 (수정 불가)
+    enterKeyEventHandler = (e) => {
+        if (e.key === "Enter") {
+            this.setState({readOnly: true});
+        }
+    };
+
+    // 수정
+    editEventHandler = (e) => {
+        const thisItem = this.state.item;
+        thisItem.title = e.target.value;
+        this.setState({item: thisItem});
     }
 
     render() {
@@ -32,10 +51,16 @@ class Todo extends React.Component {
                 }
                 disablePadding
             >
-                <Checkbox checked={item.done}/>
+                <Checkbox checked={item.done} disableRipple/>
                 <ListItemText>
-                    <InputBase
-                        inputProps={{"aria-label": "naked"}}
+                    <InputBase  //mui에서 사용하는 inputBase 에는 이미 readOnly라는 props가 있다
+                        inputProps={{
+                            "aria-label": "naked",
+                            readOnly: this.state.readOnly,
+                        }}
+                        onClick={this.offReadOnlyMode}
+                        onKeyPress={this.enterKeyEventHandler}
+                        onChange={this.editEventHandler}
                         type="text"
                         id={item.id}
                         name={item.id}
