@@ -38,6 +38,13 @@ class Todo extends React.Component {
         this.setState({item: thisItem});
     }
 
+    //check box 체크 변경
+    checkboxEventHandler = (e) => {
+        const thisItem = this.state.item;
+        thisItem.done = !thisItem.done;
+        this.setState({item: thisItem});
+    }
+
     render() {
         const item = this.state.item;
         return (
@@ -51,7 +58,7 @@ class Todo extends React.Component {
                 }
                 disablePadding
             >
-                <Checkbox checked={item.done} disableRipple/>
+                <Checkbox checked={item.done} onChange={this.checkboxEventHandler}/>
                 <ListItemText>
                     <InputBase  //mui에서 사용하는 inputBase 에는 이미 readOnly라는 props가 있다
                         inputProps={{
