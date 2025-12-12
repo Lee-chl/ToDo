@@ -64,7 +64,7 @@ public class ToDoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("실패");
     }
 
-    @PostMapping("create/todo")
+    @PostMapping
     public ResponseEntity<?> createTodo(@RequestBody toDoDto dto) {
         try {
             // 엔티티로 변환
@@ -88,7 +88,7 @@ public class ToDoController {
         }
     }
 
-    @GetMapping("get/todo")
+    @GetMapping
     public ResponseEntity<?> retrieveTodoList() {
         // 서비스 메서드 retrieve() 메서드를 사용해 리스트 가져온다.
         List<TodoVo> entities = serviceNew.retrieveTodoList(temporaryUserId);
@@ -100,7 +100,7 @@ public class ToDoController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping("put/todo")
+    @PutMapping
     public ResponseEntity<?> putTodo(@RequestBody toDoDto dto) {
         TodoVo vo = toDoDto.toVo(dto);
         vo.setUser_id(temporaryUserId);
@@ -111,7 +111,7 @@ public class ToDoController {
         return ResponseEntity.ok().body(response);
     }
 
-    @DeleteMapping("delete/todo")
+    @DeleteMapping
     public ResponseEntity<?> deleteTodo(@RequestBody toDoDto dto) {
         try {
             TodoVo vo = toDoDto.toVo(dto);

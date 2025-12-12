@@ -34,7 +34,7 @@ class Todo extends React.Component {
     // 수정
     editEventHandler = (e) => {
         const thisItem = this.state.item;
-        thisItem.title = e.target.value;
+        thisItem.message = e.target.value;
         this.setState({item: thisItem});
     }
 
@@ -71,7 +71,7 @@ class Todo extends React.Component {
                         type="text"
                         id={item.id}
                         name={item.id}
-                        value={item.title}
+                        value={item.message}
                         multiline={true}
                         fullWidth={true}
                     />

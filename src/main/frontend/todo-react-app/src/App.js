@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Todo from "./Todo";
 import AddTodo from "./AddTodo";
+import {call} from './service/ApiService'
 import {Paper, List, Container} from "@mui/material";
 
 class App extends React.Component {
@@ -12,24 +13,27 @@ class App extends React.Component {
         };
     }
 
+    componentWillMount() {
+        call("/todo", "GET", null).then((response) =>
+            this.setState({items: response.data})
+        );
+    }
+
     // list add
     add = (item) => {
-        const thisItems = this.state.items;
-        item.id = "ID-" + thisItems.length; //key 위한 id 추가
-        item.done = false;
-        thisItems.push(item);
-        this.setState({items: thisItems}); // 업데이트는 반드시 this.setState로 해야함
-    }
+        call("/todo", "POST", item).then((response) =>
+            this.setState({items: response.data})
+        );
+    };
 
     // delete
     delete = (item) => {
-        const thisItems = this.state.items;
-        const newItems = thisItems.filter(e => e.id !== item.id);
-        this.setState({items: newItems}, () => {
-            //디버깅 콜백
-            console.log("Update Items : ", this.state.items)
-        });
-    }
+        call("/todo", "DELETE", item).then((response) =>
+            this.setState({items: response.data})
+        );
+    };
+
+
 
     render() {
         let todoItems = this.state.items.length > 0 && (
@@ -49,28 +53,6 @@ class App extends React.Component {
                 </Container>
             </div>
         );
-    }
-
-    componentDidMount() {
-        const requestOptions = {
-            method: "GET",
-            headers: {"Content-Type": "application/json"},
-        };
-
-        fetch("http://localhost:8080/todo", requestOptions)
-            .then((response) => response.json())
-            .then(
-                (response) => {
-                    this.setState({
-                        items: response.data,
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        error,
-                    });
-                }
-            );
     }
 }
 
