@@ -13,6 +13,7 @@ class Todo extends React.Component {
         super(props)
         this.state = {item: props.item, readOnly: true}; //타이틀 수정할 수있는 상태로 변경하기 위해 read Only 상태 추가
         this.delete = props.delete;
+        this.update = props.update;
     }
 
     deleteEventHandler = () => {
@@ -28,6 +29,7 @@ class Todo extends React.Component {
     enterKeyEventHandler = (e) => {
         if (e.key === "Enter") {
             this.setState({readOnly: true});
+            this.update(this.state.item)
         }
     };
 
@@ -43,6 +45,7 @@ class Todo extends React.Component {
         const thisItem = this.state.item;
         thisItem.done = !thisItem.done;
         this.setState({item: thisItem});
+        this.update(this.state.item); //check box 변경 시 저장
     }
 
     render() {
