@@ -2,7 +2,7 @@ package com.todo.controller;
 
 import com.todo.dto.ResponseDTO;
 import com.todo.dto.UserDTO;
-import com.todo.repository.UserRepository;
+import com.todo.security.TokenProvider;
 import com.todo.service.UserService;
 import com.todo.vo.UserVo;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService service;
+    private final TokenProvider tokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO dto) {
@@ -49,9 +50,12 @@ public class UserController {
         );
 
         if (user != null) {
+            // token 생성
+            final String token = tokenProvider.create(user);
             final UserDTO responseUserDto = UserDTO.builder()
                     .email(user.getEmail())
                     .id(user.getId())
+                    .token(token)
                     .build();
             return ResponseEntity.ok().body(responseUserDto);
         } else {
