@@ -1,0 +1,69 @@
+package com.todo.security;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+@Component
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final TokenProvider tokenProvider;
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        try {
+            // 요청에서 토큰 가져오기
+            String token = parseBarerToken(request);
+            log.info("Filter is running...");
+            // 토큰 검사하기 JWT 이므로 인가 서버에 요청하지 않고도 검증 가능
+            if (token != null && !token.equalsIgnoreCase("null")) {
+                // userId 가져오기. 위조된 경우 예외 처리된다.
+                String userId = tokenProvider.validateAndGetUser(token);
+                log.info("Authenticated user ID : ", userId);
+                // 인증 완료 SecurityContextHolder에 등록해야 인증된 사용자라고 생각한다.
+                AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userId, // 인증된 사용자의 정보 문자열이 아니더라도 아무것이나 넣을 수 있다. 보통 UserDetails 라는 오브젝트를 넣는데 여기선 안 넣었다
+                        null,
+                        AuthorityUtils.NO_AUTHORITIES
+                );
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                securityContext.setAuthentication(authentication);
+                SecurityContextHolder.setContext(securityContext);
+            }
+        } catch (ExpiredJwtException e) {
+            log.error("JWT Token is expired : {}", e);
+        } catch (Exception e) {
+            log.error("Could not set user authentication in security context", e);
+        }
+
+        filterChain.doFilter(request, response);
+    }
+
+    private String parseBarerToken(HttpServletRequest request) {
+        // Http 요청의 헤더를 파싱해 Barer 토큰을 리턴
+        String barerToken = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(barerToken) && barerToken.startsWith("Barer ")) {
+            return barerToken.substring(7);
+        }
+        return null;
+    }
+}
