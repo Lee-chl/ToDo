@@ -7,6 +7,8 @@ import com.todo.service.UserService;
 import com.todo.vo.UserVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ public class UserController {
 
     private final UserService service;
     private final TokenProvider tokenProvider;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO dto) {
@@ -46,7 +49,8 @@ public class UserController {
     public ResponseEntity<?> authenticate(@RequestBody UserDTO dto) {
         UserVo user = service.getByCredentials(
                 dto.getEmail(),
-                dto.getPassword()
+                dto.getPassword(),
+                passwordEncoder
         );
 
         if (user != null) {
@@ -64,6 +68,5 @@ public class UserController {
                     .build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
-
     }
 }

@@ -5,6 +5,7 @@ import com.todo.vo.UserVo;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +26,13 @@ public class UserService {
         return userRepository.save(userVo);
     }
 
-    public UserVo getByCredentials(final String email, final String password) {
-        return userRepository.findByEmailAndPassword(email, password);
+    public UserVo getByCredentials(final String email, final String password, final PasswordEncoder encoder) {
+        final UserVo orginalUser = userRepository.findByEmail(email);
+
+        // matches 메서드 이용해 패스워드가 같은지 확인
+        if (orginalUser != null && encoder.matches(password, orginalUser.getPassword())) {
+            return orginalUser;
+        }
+        return null;
     }
 }
