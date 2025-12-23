@@ -28,7 +28,6 @@ public class UserService {
 
     public UserVo getByCredentials(final String email, final String password, final PasswordEncoder encoder) {
         final UserVo orginalUser = userRepository.findByEmail(email);
-
         // matches 메서드 이용해 패스워드가 같은지 확인
         if (orginalUser != null && encoder.matches(password, orginalUser.getPassword())) {
             return orginalUser;

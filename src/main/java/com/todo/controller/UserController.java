@@ -30,7 +30,7 @@ public class UserController {
             UserVo user = UserVo.builder()
                     .email(dto.getEmail())
                     .username(dto.getUsername())
-                    .password(dto.getPassword())
+                    .password(passwordEncoder.encode(dto.getPassword())) // 암호화
                     .build();
             UserVo registeredUser = service.create(user);
             UserDTO responseUserDTO = UserDTO.builder()
