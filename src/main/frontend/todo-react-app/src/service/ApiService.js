@@ -30,3 +30,11 @@ export function call(api, method, request) {
             return Promise.reject(error);
         });
 }
+
+export function signin(userDto) {
+    return call("/auth/signin", "POST", userDto)
+        .then((response) => {
+            console.log("response: ", response);
+            alert("로그인 토큰: " + response.token);
+        });
+}
