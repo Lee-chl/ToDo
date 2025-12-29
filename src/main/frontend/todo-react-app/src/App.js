@@ -70,7 +70,7 @@ class App extends React.Component {
         );
         return (
             <div className="App">
-                {navigationBar} /* 네비게이션 바 렌더링 */
+                {navigationBar}
                 <Container maxWidth="md">
                     <AddTodo add={this.add}/>
                     <div className="TodoList">{todoItems}</div>
