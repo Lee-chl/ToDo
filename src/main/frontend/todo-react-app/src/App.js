@@ -4,7 +4,6 @@ import Todo from "./Todo";
 import AddTodo from "./AddTodo";
 import {call, signout} from './service/ApiService'
 import {Paper, List, Container, Grid, Button, AppBar, Toolbar, Typography} from "@mui/material";
-import {Add} from "@mui/icons-material";
 
 class App extends React.Component {
     constructor(props) {
