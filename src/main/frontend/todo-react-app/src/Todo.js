@@ -61,7 +61,7 @@ class Todo extends React.Component {
                 }
                 disablePadding
             >
-                <Checkbox checked={item.done} onChange={this.checkboxEventHandler}/>
+                <Checkbox color="secondary" checked={item.done} onChange={this.checkboxEventHandler}/>
                 <ListItemText>
                     <InputBase  //mui에서 사용하는 inputBase 에는 이미 readOnly라는 props가 있다
                         inputProps={{
