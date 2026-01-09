@@ -12,8 +12,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         //모든 경로에 대해
         registry.addMapping("/**")
-                // Origin이 http:localhost:3000에 대해
-                .allowedOrigins("http://localhost:3000")
+                // Origin이 http:localhost:3000 과 AWS에 배포한 주소 에 대해
+                .allowedOrigins("http://localhost:3000" , "http://<도메인이름>/<리전>.elasticbeanstalk.com /")
                 // GET, POST, PUT, PATCH, DELETE, OPTIONS 메서드 허용
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
